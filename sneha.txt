@@ -1,0 +1,233 @@
+ 1) import ReactDOM from "react-dom/client";
+import {BrowserRouter,Routes,Route} from "react-router-dom";
+import Layout from "./pages/Layout";
+import Home from "./pages/Home";
+import Blogs from "./pages/Blogs";
+import Contact from "./pages/Contact";
+export default function App(){
+ return(
+   <BrowserRouter>
+   <Routes>
+   <Route path="/" element={<Layout/>}>
+   <Route index element={<Home/>}/>
+   <Route path="blogs" element={<Blogs/>}/>
+   <Route path="contact" element={<Contact/>}/>
+   </Route>
+   </Routes>
+   </BrowserRouter>
+ );
+}
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>)
+
+
+
+
+
+
+
+const Contact=()=>{
+    return<h1>inside Contact</h1>;
+ };
+ export default Contact;
+
+
+const Home=()=>{
+    return<h1>inside Home</h1>;
+ };
+ export default Home;
+
+
+const Blogs=()=>{
+    return<h1>inside Blogs</h1>;
+ };
+ export default Blogs;
+
+
+
+import{Outlet,Link}from "react-router-dom";
+const Layout=()=>{
+   return(
+       <>
+       <nav>
+           <ul>
+               <li>
+                   <Link to="/">Home</Link>
+                   </li>
+                   <li>
+                   <Link to="/blogs">Blogs</Link>
+                   </li>
+                   <li>
+                   <Link to="/contact">Contact</Link>
+                   </li>
+                   </ul>
+                   </nav>
+                   <Outlet/>
+                   </>
+   )
+};
+export default Layout;
+
+
+
+2)   
+import React from "react";
+import ReactDOM from 'react-dom/client';
+class Pareat extends React.Component
+{
+  constructor(props)
+  {
+    super(props)
+    this.state={
+      id:1,name:'text'};
+    }
+    render()
+    {
+      return(<div>
+        <h1>{this.state.id}</h1>
+        <h1>{this.state.id}</h1>
+      </div>)
+    }
+}
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Pareat/>);
+  
+
+3) Conditional rendering
+import React from "react";
+import ReactDOM  from "react-dom/client";
+function MadeGoal()
+{
+  return <h1>Goal</h1>
+}
+function MissedGoal()
+{
+  return <h1>no goal</h1>
+}
+function Goal(props)
+{
+  const isGoal=props.isGoal;
+  if(isGoal)
+  {
+    return (<MadeGoal/>);
+  }
+  return (<MissedGoal/>);
+}
+const root=ReactDOM.createRoot(document.getElementById('root'))
+root.render(<Goal isGoal={false}/>);
+  
+
+4)
+
+import React from "react";
+import ReactDOM  from "react-dom/client";
+function Display()
+{
+  const dis=()=>
+  {
+    alert("sneha");
+  }
+  return(
+    <button onClick={dis}></button>
+  );
+}
+const root=ReactDOM.createRoot(document.getElementById('root'))
+root.render(<Display/>);
+
+
+5)BOOK.JAVA
+package com.example.demo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection="Book")
+
+public class Book {
+	@Id
+	private int id;
+	private String bookName;
+	private String authorName;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getBookName() {
+		return bookName;
+	}
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
+	public String getAuthorName() {
+		return authorName;
+	}
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+	
+
+}
+
+BOOKCONTROLLER.JAVA
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.Book;
+import com.example.demo.BookRepo;
+import java.util.List;
+@RestController
+
+public class BookController {
+	@Autowired
+	private BookRepo repo;
+	@PostMapping("/addBook")
+	public String saveBook (@RequestBody Book book) {
+		repo.save(book);
+		return"added successfully";
+	}
+	@GetMapping("/findAllBooks")
+	public List<Book> getBooks(){
+		return repo.findAll();
+	}
+	@DeleteMapping("/delete/{id}")
+	public String deleteBook(@PathVariable int id) {
+		repo.deleteById(id);
+		return"deleted successfully";
+		
+	}
+	
+
+}
+
+BOOKREPO.JAVA
+package com.example.demo;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import com.example.demo.Book;
+
+public interface BookRepo 
+   extends MongoRepository<Book,Integer>{
+
+}
+
+BOOKAPLLICATION.JAVA
+spring.application.name=demo
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=BookStore
+server.port:9898
+
+
+
+
+
+  
+  
